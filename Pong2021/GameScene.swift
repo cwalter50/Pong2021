@@ -20,7 +20,31 @@ class GameScene: SKScene
         
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        let location = touches.first?.location(in: self)
+        print(location)
+        makeNewBall(touchLocation: location!)
+//        print(event)
         
+        
+    }
+    
+    func makeNewBall(touchLocation: CGPoint)
+    {
+        let ball = SKSpriteNode(color: UIColor.green, size: CGSize(width: 50, height: 50))
+        ball.position = touchLocation
+        addChild(ball)
+        
+        ball.physicsBody = SKPhysicsBody(circleOfRadius: 25)
+        ball.physicsBody?.mass = 0.2
+        ball.physicsBody?.restitution = 1.0
+        ball.physicsBody?.affectedByGravity = false
+        ball.physicsBody?.friction = 0
+        ball.physicsBody?.allowsRotation = false
+        ball.physicsBody?.velocity = CGVector(dx: 0, dy: 150)
         
     }
 }
