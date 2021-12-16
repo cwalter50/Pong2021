@@ -11,9 +11,14 @@ import GameplayKit
 class GameScene: SKScene
 {
     
+    var theBall = SKNode()
+    
     override func didMove(to view: SKView)
     {
         // this is like viewdidLoad!!!!
+        
+        theBall = self.childNode(withName: "theBall")!
+        
         let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         borderBody.friction = 0
         self.physicsBody = borderBody
@@ -26,7 +31,11 @@ class GameScene: SKScene
     {
         let location = touches.first?.location(in: self)
         print(location)
-        makeNewBall(touchLocation: location!)
+        
+        theBall.physicsBody?.velocity = CGVector(dx: 0, dy: -1000)
+        
+        
+//        makeNewBall(touchLocation: location!)
 //        print(event)
         
         
