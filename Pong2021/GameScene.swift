@@ -12,11 +12,12 @@ class GameScene: SKScene
 {
     
     var theBall = SKNode()
+    var paddle = SKSpriteNode()
     
     override func didMove(to view: SKView)
     {
         // this is like viewdidLoad!!!!
-        
+        paddle = self.childNode(withName: "paddle") as! SKSpriteNode
         theBall = self.childNode(withName: "theBall")!
         
         let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
@@ -27,18 +28,32 @@ class GameScene: SKScene
         
     }
     
+    var isFingerOnPaddle = false
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         let location = touches.first?.location(in: self)
         print(location)
-        
-        theBall.physicsBody?.velocity = CGVector(dx: 0, dy: -1000)
-        
-        
-//        makeNewBall(touchLocation: location!)
-//        print(event)
-        
-        
+        // figure out if you are touching paddle
+        if paddle.contains(location!)
+        {
+            isFingerOnPaddle = true
+        }
+    }
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        // move paddle left or right with touch location
+        let location = touches.first?.location(in: self)
+        // figure out if you are touching paddle
+        if isFingerOnPaddle == true
+        {
+            paddle.position = CGPoint(x: location!.x, y: paddle.position.y)
+        }
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        // remove finger off paddle
+        isFingerOnPaddle = false
     }
     
     func makeNewBall(touchLocation: CGPoint)
