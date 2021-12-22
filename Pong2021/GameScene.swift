@@ -13,6 +13,8 @@ class GameScene: SKScene
     
     var theBall = SKNode()
     var paddle = SKSpriteNode()
+    var aiPaddle = SKSpriteNode()
+    
     
     override func didMove(to view: SKView)
     {
@@ -26,7 +28,39 @@ class GameScene: SKScene
         
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         
+        createAIPaddle()
+
     }
+    
+    func createAIPaddle()
+    {
+        aiPaddle = SKSpriteNode(color: UIColor.green, size: CGSize(width: 200, height: 50))
+        aiPaddle.position = CGPoint(x: frame.width/2, y: frame.height * 0.9)
+        
+        // add physics to the paddle
+        aiPaddle.physicsBody = SKPhysicsBody(rectangleOf: aiPaddle.size)
+        aiPaddle.physicsBody?.affectedByGravity = false
+        aiPaddle.physicsBody?.friction = 0
+        aiPaddle.physicsBody?.allowsRotation = false
+        aiPaddle.physicsBody?.isDynamic = false
+        
+        addChild(aiPaddle)
+        
+        run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.run(followBall),
+            SKAction.wait(forDuration: 0.4)
+        ])))
+        
+    }
+    
+    func followBall()
+    {
+        let move = SKAction.moveTo(x: theBall.position.x, duration: 0.4)
+        aiPaddle.run(move)
+    }
+    
+
+
     
     var isFingerOnPaddle = false
     
