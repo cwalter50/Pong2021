@@ -8,13 +8,14 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene
+class GameScene: SKScene, SKPhysicsContactDelegate
 {
     
     var theBall = SKNode()
     var paddle = SKSpriteNode()
     var aiPaddle = SKSpriteNode()
-    
+    var top = SKSpriteNode()
+    var bottom = SKSpriteNode()
     
     override func didMove(to view: SKView)
     {
@@ -29,7 +30,48 @@ class GameScene: SKScene
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         
         createAIPaddle()
-
+        createTopandBottom()
+        
+        physicsWorld.contactDelegate = self
+        
+        theBall.physicsBody?.categoryBitMask = 1
+        top.physicsBody?.categoryBitMask = 2
+        bottom.physicsBody?.categoryBitMask = 3
+        
+        theBall.physicsBody?.contactTestBitMask = 2 | 3
+        
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact)
+    {
+        print(contact.contactPoint)
+        
+        if contact.bodyA.categoryBitMask == 1 && contact.bodyB.categoryBitMask == 3
+        {
+            print("ball hit top")
+        }
+        if contact.bodyA.categoryBitMask == 3 && contact.bodyB.categoryBitMask == 1
+        {
+            print("ball hit top")
+        }
+    }
+    
+    func createTopandBottom()
+    {
+        top = SKSpriteNode(color: .red, size: CGSize(width: frame.width, height: 50))
+        top.position = CGPoint(x: frame.width / 2, y: frame.height)
+        addChild(top)
+        top.physicsBody = SKPhysicsBody(rectangleOf: top.frame.size)
+        top.physicsBody?.isDynamic = false
+        top.name = "top"
+        
+        bottom = SKSpriteNode(color: .red, size: CGSize(width: frame.width, height: 50))
+        bottom.position = CGPoint(x: frame.width / 2, y: 0)
+        addChild(bottom)
+        bottom.physicsBody = SKPhysicsBody(rectangleOf: bottom.frame.size)
+        bottom.physicsBody?.isDynamic = false
+        bottom.name = "bottom"
+        
     }
     
     func createAIPaddle()
