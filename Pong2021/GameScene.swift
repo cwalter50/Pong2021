@@ -46,13 +46,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     {
         print(contact.contactPoint)
         
-        if contact.bodyA.categoryBitMask == 1 && contact.bodyB.categoryBitMask == 3
+        if contact.bodyA.categoryBitMask == 1 && contact.bodyB.categoryBitMask == 2
         {
             print("ball hit top")
         }
-        if contact.bodyA.categoryBitMask == 3 && contact.bodyB.categoryBitMask == 1
+        if contact.bodyA.categoryBitMask == 2 && contact.bodyB.categoryBitMask == 1
         {
             print("ball hit top")
+        }
+        if contact.bodyA.categoryBitMask == 1 && contact.bodyB.categoryBitMask == 3
+        {
+            print("ball hit bottom")
+        }
+        if contact.bodyA.categoryBitMask == 3 && contact.bodyB.categoryBitMask == 1
+        {
+            print("ball hit bottom")
         }
     }
     
