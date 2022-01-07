@@ -17,6 +17,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     var top = SKSpriteNode()
     var bottom = SKSpriteNode()
     
+    var cpuScore = 0
+    var myScore = 0
+    
     override func didMove(to view: SKView)
     {
         // this is like viewdidLoad!!!!
@@ -49,19 +52,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         if contact.bodyA.categoryBitMask == 1 && contact.bodyB.categoryBitMask == 2
         {
             print("ball hit top")
+            myScore += 1
         }
         if contact.bodyA.categoryBitMask == 2 && contact.bodyB.categoryBitMask == 1
         {
             print("ball hit top")
+            myScore += 1
         }
         if contact.bodyA.categoryBitMask == 1 && contact.bodyB.categoryBitMask == 3
         {
             print("ball hit bottom")
+            cpuScore += 1
         }
         if contact.bodyA.categoryBitMask == 3 && contact.bodyB.categoryBitMask == 1
         {
             print("ball hit bottom")
+            cpuScore += 1
         }
+        
+        print("MyScore: \(myScore) CPUScore: \(cpuScore)")
     }
     
     func createTopandBottom()
