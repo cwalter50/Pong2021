@@ -19,6 +19,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
     
     var cpuScore = 0
     var myScore = 0
+    var scoreLabel = SKLabelNode()
     
     override func didMove(to view: SKView)
     {
@@ -34,6 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         
         createAIPaddle()
         createTopandBottom()
+        setUpLabels()
         
         physicsWorld.contactDelegate = self
         
@@ -43,6 +45,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         
         theBall.physicsBody?.contactTestBitMask = 2 | 3
         
+        
+    }
+    
+    func setUpLabels()
+    {
+        scoreLabel = SKLabelNode(fontNamed: "Arial")
+        scoreLabel.text = "\(myScore) - \(cpuScore)"
+        scoreLabel.position = CGPoint(x: frame.width * 0.90, y: frame.height * 0.5)
+        scoreLabel.fontSize = 75
+        scoreLabel.zRotation = CGFloat.pi / 2
+        scoreLabel.fontColor = UIColor.black
+        addChild(scoreLabel)
+        
+    }
+    
+    func updateScoreLabels()
+    {
+        scoreLabel.text = "\(myScore) - \(cpuScore)"
     }
     
     func didBegin(_ contact: SKPhysicsContact)
@@ -69,7 +89,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate
             print("ball hit bottom")
             cpuScore += 1
         }
-        
+        updateScoreLabels()
         print("MyScore: \(myScore) CPUScore: \(cpuScore)")
     }
     
