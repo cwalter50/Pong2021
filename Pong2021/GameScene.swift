@@ -73,24 +73,49 @@ class GameScene: SKScene, SKPhysicsContactDelegate
         {
             print("ball hit top")
             myScore += 1
+            resetBall()
         }
         if contact.bodyA.categoryBitMask == 2 && contact.bodyB.categoryBitMask == 1
         {
             print("ball hit top")
             myScore += 1
+            resetBall()
         }
         if contact.bodyA.categoryBitMask == 1 && contact.bodyB.categoryBitMask == 3
         {
             print("ball hit bottom")
             cpuScore += 1
+            resetBall()
         }
         if contact.bodyA.categoryBitMask == 3 && contact.bodyB.categoryBitMask == 1
         {
             print("ball hit bottom")
             cpuScore += 1
+            resetBall()
         }
         updateScoreLabels()
         print("MyScore: \(myScore) CPUScore: \(cpuScore)")
+    }
+    
+    func resetBall()
+    {
+        theBall.physicsBody?.velocity = .zero // stop ball
+        let wait = SKAction.wait(forDuration: 1.0) // make the delay
+        let sequence = SKAction.sequence([wait, SKAction.run(bringBallToCenter), wait, SKAction.run(pushBall)])
+        run(sequence)
+    }
+    
+    func bringBallToCenter()
+    {
+        theBall.position = CGPoint(x: frame.width/2, y: frame.height/2)
+    }
+    
+    func pushBall()
+    {
+        var nums = [-200, 200]
+        var randomx = nums.randomElement()!
+        var randomy = nums.randomElement()!
+        theBall.physicsBody?.applyImpulse(CGVector(dx: randomx, dy: randomy))
     }
     
     func createTopandBottom()
